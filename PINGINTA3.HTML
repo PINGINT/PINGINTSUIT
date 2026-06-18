@@ -1,0 +1,2451 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>PINGINTLAB - SUITE TECNOLÓGICA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --azul-primary: #0066ff;
+            --azul-secondary: #0044aa;
+            --azul-light: #00b4ff;
+            --azul-bg: #0a1a3a;
+            --blanco: #ffffff;
+            --gris: rgba(255,255,255,0.6);
+            --shadow: 0 8px 40px rgba(0,102,255,0.15);
+            --radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        html {
+            -webkit-text-size-adjust: 100%;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            font-family: -apple-system, 'Segoe UI', 'Roboto', system-ui, sans-serif;
+            background: linear-gradient(145deg, #060d1a, #0a1a3a, #0d2137);
+            min-height: 100vh;
+            padding: 12px;
+            overflow-x: hidden;
+            color: white;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(0,180,255,0.04) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(0,102,255,0.04) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(0,180,255,0.02) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ========== HEADER ========== */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 18px;
+            background: linear-gradient(145deg, rgba(0,50,120,0.85), rgba(0,102,255,0.75));
+            border-radius: var(--radius);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0,180,255,0.15);
+            box-shadow: 0 4px 40px rgba(0,102,255,0.2);
+            margin-bottom: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(0,180,255,0.1), transparent 70%);
+            animation: headerPulse 8s ease-in-out infinite;
+        }
+
+        @keyframes headerPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(145deg, rgba(0,180,255,0.2), rgba(0,102,255,0.2));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 900;
+            color: white;
+            border: 2px solid rgba(0,180,255,0.3);
+            animation: logoPulse 3s infinite;
+        }
+
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(0,180,255,0.1); }
+            50% { transform: scale(1.05); box-shadow: 0 0 40px rgba(0,180,255,0.3); }
+        }
+
+        .header h1 {
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            text-transform: uppercase;
+        }
+
+        .header h1 span {
+            color: #00d4ff;
+        }
+
+        .header .sub {
+            font-size: 8px;
+            opacity: 0.5;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .badge-date {
+            background: rgba(255,255,255,0.08);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 9px;
+            border: 1px solid rgba(255,255,255,0.05);
+            text-transform: uppercase;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #00c853;
+            animation: dotPulse 2s infinite;
+            display: inline-block;
+        }
+
+        @keyframes dotPulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(0,200,83,0.2); }
+            50% { box-shadow: 0 0 25px rgba(0,200,83,0.6); }
+        }
+
+        /* ========== CHAT BOT ========== */
+        .chat-bot-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+        }
+
+        .chat-window {
+            background: rgba(10,30,60,0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 18px;
+            width: 340px;
+            max-width: 92vw;
+            max-height: 500px;
+            border: 1px solid rgba(0,180,255,0.15);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            animation: chatIn 0.4s ease-out;
+        }
+
+        .chat-window.open {
+            display: flex;
+        }
+
+        @keyframes chatIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .chat-header-bot {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            background: linear-gradient(145deg, #0056b3, #1a73e8);
+            border-bottom: 1px solid rgba(0,180,255,0.1);
+        }
+
+        .chat-header-bot .avatar {
+            width: 36px;
+            height: 36px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .chat-header-bot .info h4 {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .chat-header-bot .info span {
+            font-size: 9px;
+            opacity: 0.6;
+            text-transform: uppercase;
+        }
+
+        .chat-header-bot .close-chat {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.4);
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 12px 16px;
+            overflow-y: auto;
+            max-height: 320px;
+            min-height: 200px;
+        }
+
+        .chat-messages::-webkit-scrollbar { width: 4px; }
+        .chat-messages::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
+        .chat-messages::-webkit-scrollbar-thumb { background: rgba(0,180,255,0.3); border-radius: 10px; }
+
+        .chat-msg {
+            margin-bottom: 8px;
+            display: flex;
+            gap: 8px;
+            animation: msgIn 0.3s ease-out;
+        }
+
+        @keyframes msgIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .chat-msg.bot {
+            justify-content: flex-start;
+        }
+
+        .chat-msg.user {
+            justify-content: flex-end;
+        }
+
+        .chat-msg .bubble {
+            max-width: 85%;
+            padding: 8px 14px;
+            border-radius: 14px;
+            font-size: 12px;
+            line-height: 1.5;
+            text-transform: uppercase;
+        }
+
+        .chat-msg.bot .bubble {
+            background: rgba(0,180,255,0.12);
+            border: 1px solid rgba(0,180,255,0.08);
+            border-radius: 14px 14px 14px 4px;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .chat-msg.user .bubble {
+            background: linear-gradient(145deg, #0066ff, #0044aa);
+            border-radius: 14px 14px 4px 14px;
+            color: white;
+        }
+
+        .chat-msg .time {
+            font-size: 8px;
+            opacity: 0.3;
+            margin-top: 2px;
+            display: block;
+            text-transform: uppercase;
+        }
+
+        .chat-input-area {
+            display: flex;
+            gap: 8px;
+            padding: 10px 14px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            background: rgba(0,0,0,0.2);
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            padding: 8px 14px;
+            border: 1px solid rgba(0,180,255,0.08);
+            border-radius: 10px;
+            background: rgba(255,255,255,0.04);
+            color: white;
+            font-size: 12px;
+            outline: none;
+            text-transform: uppercase;
+        }
+
+        .chat-input-area input::placeholder {
+            color: rgba(255,255,255,0.2);
+            text-transform: uppercase;
+        }
+
+        .chat-input-area input:focus {
+            border-color: rgba(0,180,255,0.2);
+        }
+
+        .chat-input-area button {
+            padding: 8px 16px;
+            background: linear-gradient(145deg, #0066ff, #0044aa);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-transform: uppercase;
+        }
+
+        .chat-input-area button:active {
+            transform: scale(0.95);
+        }
+
+        .chat-bot-btn {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(145deg, #00b4ff, #0066cc);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            cursor: pointer;
+            box-shadow: 0 4px 35px rgba(0,180,255,0.4);
+            border: 2px solid rgba(0,180,255,0.3);
+            transition: var(--transition);
+            animation: botPulse 2s infinite;
+        }
+
+        @keyframes botPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 4px 35px rgba(0,180,255,0.3); }
+            50% { transform: scale(1.06); box-shadow: 0 8px 60px rgba(0,180,255,0.5); }
+        }
+
+        .chat-bot-btn:active {
+            transform: scale(0.92);
+        }
+
+        /* ========== MENÚ ========== */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        @media (max-width: 480px) {
+            .menu-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+        }
+
+        .menu-card {
+            background: rgba(255,255,255,0.04);
+            border-radius: var(--radius);
+            padding: 14px 10px;
+            border: 1px solid rgba(0,180,255,0.08);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(0,180,255,0.05), transparent);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .menu-card:hover::before {
+            opacity: 1;
+        }
+
+        .menu-card:active {
+            transform: scale(0.94);
+        }
+
+        .menu-card .icon {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 4px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .menu-card h3 {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .menu-card .tag {
+            display: inline-block;
+            padding: 1px 8px;
+            border-radius: 10px;
+            font-size: 7px;
+            font-weight: 700;
+            text-transform: uppercase;
+            background: rgba(0,180,255,0.12);
+            color: #00b4ff;
+            margin-top: 4px;
+            border: 1px solid rgba(0,180,255,0.08);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ========== MODALES ========== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(15px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 12px;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: linear-gradient(160deg, rgba(10,30,60,0.98), rgba(20,50,90,0.98));
+            border-radius: 20px;
+            max-width: 850px;
+            width: 100%;
+            max-height: 92vh;
+            overflow-y: auto;
+            padding: 20px 16px;
+            border: 1px solid rgba(0,180,255,0.1);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.8);
+            animation: modalIn 0.4s ease-out;
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.92) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(0,180,255,0.08);
+        }
+
+        .modal-header h2 {
+            font-size: 16px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .modal-header .close {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: rgba(255,255,255,0.4);
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-header .close:hover {
+            color: #ff1744;
+            border-color: rgba(255,23,68,0.3);
+        }
+
+        .modal-body .form-group {
+            margin-bottom: 12px;
+        }
+
+        .modal-body .form-group label {
+            display: block;
+            font-size: 10px;
+            font-weight: 700;
+            color: #00b4ff;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .modal-body .form-group label .req {
+            color: #ff1744;
+            margin-left: 2px;
+        }
+
+        .modal-body .form-group input,
+        .modal-body .form-group textarea,
+        .modal-body .form-group select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid rgba(0,180,255,0.08);
+            border-radius: 12px;
+            font-size: 13px;
+            background: rgba(255,255,255,0.04);
+            color: white;
+            outline: none;
+            transition: var(--transition);
+            font-family: inherit;
+            text-transform: uppercase;
+        }
+
+        .modal-body .form-group input::placeholder,
+        .modal-body .form-group textarea::placeholder {
+            color: rgba(255,255,255,0.25);
+            text-transform: uppercase;
+        }
+
+        .modal-body .form-group input:focus,
+        .modal-body .form-group textarea:focus,
+        .modal-body .form-group select:focus {
+            border-color: #00b4ff;
+            box-shadow: 0 0 0 4px rgba(0,180,255,0.08);
+            background: rgba(255,255,255,0.06);
+        }
+
+        .modal-body .form-group select option {
+            background: #0a1a3a;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        .modal-body .form-group textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .modal-body .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        @media (max-width: 600px) {
+            .modal-body .form-row {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+        }
+
+        .btn-submit {
+            background: linear-gradient(145deg, #0066ff, #0044aa);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 30px rgba(0,102,255,0.25);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-submit:active {
+            transform: scale(0.97);
+        }
+
+        .btn-submit::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent);
+            transform: translateX(-100%);
+            transition: 0.6s;
+        }
+
+        .btn-submit:hover::after {
+            transform: translateX(100%);
+        }
+
+        .btn-submit.green {
+            background: linear-gradient(145deg, #00c853, #009624);
+            box-shadow: 0 4px 30px rgba(0,200,83,0.25);
+        }
+
+        .btn-submit.orange {
+            background: linear-gradient(145deg, #ff6d00, #e65100);
+            box-shadow: 0 4px 30px rgba(255,109,0,0.25);
+        }
+
+        .btn-submit.cyan {
+            background: linear-gradient(145deg, #00bcd4, #00838f);
+            box-shadow: 0 4px 30px rgba(0,188,212,0.25);
+        }
+
+        .btn-submit.purple {
+            background: linear-gradient(145deg, #7b1fa2, #4a148c);
+            box-shadow: 0 4px 30px rgba(123,31,162,0.25);
+        }
+
+        /* ====== TICKET ====== */
+        .ticket-modal {
+            max-width: 400px;
+        }
+
+        .ticket-content {
+            background: white;
+            color: #0a1a3a;
+            padding: 20px;
+            border-radius: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+
+        .ticket-content .ticket-header {
+            text-align: center;
+            border-bottom: 2px dashed #0a1a3a;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+
+        .ticket-content .ticket-header h3 {
+            font-size: 16px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .ticket-content .ticket-line {
+            border-top: 1px dashed #0a1a3a;
+            margin: 6px 0;
+        }
+
+        .ticket-content .ticket-total {
+            font-size: 18px;
+            font-weight: 800;
+            text-align: center;
+            padding: 8px 0;
+            border-top: 2px solid #0a1a3a;
+            border-bottom: 2px solid #0a1a3a;
+            margin: 8px 0;
+        }
+
+        .ticket-content .ticket-footer {
+            text-align: center;
+            font-size: 10px;
+            color: #666;
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+
+        .btn-imprimir {
+            background: #0a1a3a;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            margin-top: 10px;
+            text-transform: uppercase;
+            font-size: 13px;
+        }
+
+        .btn-imprimir:active {
+            transform: scale(0.97);
+        }
+
+        /* ====== TOAST ====== */
+        .toast {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(0,30,60,0.95);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 500;
+            font-size: 12px;
+            max-width: 92%;
+            border-left: 4px solid #00b4ff;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0,180,255,0.1);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 2000;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast.success { border-left-color: #00c853; }
+        .toast.error { border-left-color: #ff1744; }
+        .toast.info { border-left-color: #00b4ff; }
+
+        /* ====== SCROLL ====== */
+        .modal::-webkit-scrollbar { width: 4px; }
+        .modal::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); border-radius: 10px; }
+        .modal::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #0066ff, #00b4ff); border-radius: 10px; }
+
+        /* ====== RESPONSIVE ====== */
+        @media (max-width: 600px) {
+            .modal { padding: 16px 12px; }
+            .menu-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+            .menu-card { padding: 10px 6px; }
+            .menu-card .icon { font-size: 22px; }
+            .menu-card h3 { font-size: 8px; }
+            .header h1 { font-size: 15px; }
+            .chat-window { width: 100%; max-width: 100%; height: 100%; max-height: 100%; border-radius: 0; bottom: 0; right: 0; }
+            .chat-bot-btn { width: 48px; height: 48px; font-size: 24px; }
+        }
+
+        @media (max-width: 400px) {
+            .menu-grid { grid-template-columns: repeat(2, 1fr); gap: 5px; }
+            .menu-card { padding: 8px 4px; }
+            .menu-card .icon { font-size: 20px; }
+            .menu-card h3 { font-size: 7px; }
+        }
+
+        /* ====== CARRUSEL ====== */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            max-height: 200px;
+            overflow: hidden;
+            border-radius: 12px;
+            margin: 8px 0;
+            background: rgba(0,0,0,0.3);
+        }
+
+        .carousel-slides {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            aspect-ratio: 16/9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .carousel-slide .slide-content {
+            padding: 20px;
+            text-align: center;
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        .carousel-slide .slide-content small {
+            display: block;
+            font-weight: 400;
+            font-size: 11px;
+            opacity: 0.7;
+            margin-top: 4px;
+            text-transform: uppercase;
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 50%;
+            z-index: 10;
+            transition: var(--transition);
+        }
+
+        .carousel-btn:active { transform: translateY(-50%) scale(0.9); }
+        .carousel-btn.prev { left: 6px; }
+        .carousel-btn.next { right: 6px; }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            padding: 6px 0;
+        }
+
+        .carousel-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .carousel-dot.active {
+            background: #00b4ff;
+            box-shadow: 0 0 20px rgba(0,180,255,0.3);
+        }
+
+        /* ====== RECARGAS ====== */
+        .recarga-opciones {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 6px;
+            margin: 6px 0;
+        }
+
+        @media (max-width: 400px) {
+            .recarga-opciones { grid-template-columns: 1fr 1fr; }
+        }
+
+        .recarga-opcion {
+            padding: 10px;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            background: rgba(255,255,255,0.02);
+        }
+
+        .recarga-opcion:active { transform: scale(0.94); }
+        .recarga-opcion .icono { font-size: 22px; display: block; }
+        .recarga-opcion .nombre { font-size: 8px; color: rgba(255,255,255,0.4); text-transform: uppercase; font-weight: 600; margin-top: 2px; }
+
+        .recarga-opcion.selected {
+            border-color: #00b4ff;
+            background: rgba(0,180,255,0.1);
+            box-shadow: 0 0 30px rgba(0,180,255,0.05);
+        }
+
+        .recarga-opcion.selected .nombre { color: #00b4ff; }
+
+        /* ====== IMPRESIÓN ====== */
+        .print-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            margin: 6px 0;
+        }
+
+        .print-btn {
+            padding: 10px;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            background: rgba(255,255,255,0.02);
+            font-size: 9px;
+            color: rgba(255,255,255,0.4);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .print-btn:active { transform: scale(0.94); }
+        .print-btn .icon { font-size: 20px; display: block; margin-bottom: 2px; }
+
+        .print-btn.selected {
+            border-color: #00b4ff;
+            background: rgba(0,180,255,0.1);
+            color: white;
+        }
+
+        /* ====== PRIVADO ====== */
+        .acceso-container {
+            background: rgba(0,180,255,0.04);
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid rgba(0,180,255,0.08);
+        }
+
+        .acceso-container input {
+            background: rgba(255,255,255,0.03) !important;
+            border-color: rgba(255,255,255,0.05) !important;
+        }
+
+        .acceso-container input:focus {
+            border-color: #00b4ff !important;
+            box-shadow: 0 0 0 4px rgba(0,180,255,0.08) !important;
+        }
+
+        .acceso-container .btn-submit {
+            background: linear-gradient(145deg, #00b4ff, #0066cc) !important;
+        }
+
+        #panelPrivado {
+            background: rgba(255,255,255,0.02);
+            border-radius: 10px;
+            padding: 14px;
+            margin-top: 10px;
+            border: 1px solid rgba(255,255,255,0.04);
+        }
+
+        #panelPrivado h3 { color: #00b4ff; text-transform: uppercase; font-size: 12px; margin-bottom: 10px; }
+        #panelPrivado .form-group label { color: #00b4ff !important; }
+
+        .usuario-badge {
+            display: inline-block;
+            background: rgba(0,180,255,0.1);
+            color: #00b4ff;
+            padding: 3px 12px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            border: 1px solid rgba(0,180,255,0.1);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .reloj-privado {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: rgba(0,180,255,0.02);
+            border-radius: 10px;
+            border: 1px solid rgba(0,180,255,0.04);
+            flex-wrap: wrap;
+        }
+
+        .reloj-privado .hora-box {
+            flex: 1;
+            text-align: center;
+            padding: 6px;
+            border-radius: 8px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(0,180,255,0.04);
+            min-width: 50px;
+        }
+
+        .reloj-privado .hora-box .label {
+            font-size: 7px;
+            color: rgba(255,255,255,0.3);
+            text-transform: uppercase;
+        }
+
+        .reloj-privado .hora-box .time {
+            font-size: 16px;
+            font-weight: 700;
+            color: #00b4ff;
+            font-family: 'Courier New', monospace;
+        }
+
+        .reloj-privado .hora-box .time.entrada { color: #00c853; }
+        .reloj-privado .hora-box .time.salida { color: #ff6d00; }
+
+        .btn-reloj {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.04);
+            color: rgba(255,255,255,0.4);
+            padding: 4px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 8px;
+            font-weight: 600;
+            transition: var(--transition);
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        .btn-reloj:hover {
+            background: rgba(0,180,255,0.08);
+            border-color: rgba(0,180,255,0.15);
+            color: white;
+        }
+
+        .btn-reloj.active {
+            background: rgba(0,180,255,0.12);
+            border-color: #00b4ff;
+            color: #00b4ff;
+        }
+
+        /* ====== FILE UPLOAD ====== */
+        .file-upload-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-upload-wrapper input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .btn-upload {
+            background: rgba(255,255,255,0.04);
+            color: white;
+            border: 1px solid rgba(0,180,255,0.08);
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            justify-content: center;
+            width: 100%;
+            text-transform: uppercase;
+        }
+
+        .btn-upload:hover {
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(0,180,255,0.15);
+        }
+
+        .file-list {
+            margin-top: 6px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .file-tag {
+            background: rgba(255,255,255,0.04);
+            border-radius: 6px;
+            padding: 3px 10px;
+            font-size: 9px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            color: rgba(255,255,255,0.6);
+            border: 1px solid rgba(255,255,255,0.04);
+            text-transform: uppercase;
+        }
+
+        .file-tag .remove {
+            cursor: pointer;
+            color: #ff1744;
+            font-weight: 700;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- ====== HEADER ====== -->
+        <div class="header">
+            <div class="header-left">
+                <div class="logo">🧠</div>
+                <div>
+                    <h1><span>PINGINT</span>LAB</h1>
+                    <div class="sub">SUITE TECNOLÓGICA · INNOVACIÓN</div>
+                </div>
+            </div>
+            <div class="header-right">
+                <span class="badge-date" id="fechaActual">📅</span>
+                <span class="status-dot"></span>
+            </div>
+        </div>
+
+        <!-- ====== MENÚ COMPLETO ====== -->
+        <div class="menu-grid">
+            <div class="menu-card" onclick="abrirModal('informatica')">
+                <span class="icon">💻</span>
+                <h3>INFORMÁTICA</h3>
+                <span class="tag">SISTEMAS · REDES</span>
+            </div>
+            <div class="menu-card" onclick="abrirModal('software')">
+                <span class="icon">⚙️</span>
+                <h3>SOFTWARE</h3>
+                <span class="tag">APPS · WEB</span>
+            </div>
+            <div class="menu-card" onclick="abrirModal('forestal')">
+                <span class="icon">🌳</span>
+                <h3>FORESTAL</h3>
+                <span class="tag">SUSTENTABLE</span>
+            </div>
+            <div class="menu-card" onclick="abrirModal('civil')">
+                <span class="icon">🏗️</span>
+                <h3>CIVIL</h3>
+                <span class="tag">CONSTRUCCIÓN</span>
+            </div>
+            <div class="menu-card" onclick="abrirModal('arquitectura')">
+                <span class="icon">🏛️</span>
+                <h3>ARQUITECTURA</h3>
+                <span class="tag">DISEÑO</span>
+            </div>
+            <div class="menu-card" onclick="abrirModal('inmobiliario')">
+                <span class="icon">🏘️</span>
+                <h3>INMOBILIARIO</h3>
+                <span class="tag">PREDIOS · VENTAS</span>
+            </div>
+            <div class="menu-card" onclick="abrirModal('juridicos')">
+                <span class="icon">⚖️</span>
+                <h3>JURÍDICOS</h3>
+                <span class="tag">ASESORÍA</span>
+            </div>
+            <div class="menu-card" onclick="abrirModal('impresion')">
+                <span class="icon">🖨️</span>
+                <h3>IMPRESIÓN</h3>
+                <span class="tag">B/N · COLOR</span>
+            </div>
+            <div class="menu-card" onclick="abrirModal('publicos')">
+                <span class="icon">📄</span>
+                <h3>PÚBLICOS</h3>
+                <span class="tag">ACTAS · TRÁMITES</span>
+            </div>
+            <div class="menu-card" onclick="abrirModal('recargas')">
+                <span class="icon">📱</span>
+                <h3>RECARGAS</h3>
+                <span class="tag">TELCEL · AT&T</span>
+            </div>
+            <div class="menu-card" onclick="abrirModal('pagos')">
+                <span class="icon">💳</span>
+                <h3>PAGOS</h3>
+                <span class="tag">TELMEX · CFE</span>
+            </div>
+            <div class="menu-card" onclick="abrirModal('mantenimiento')">
+                <span class="icon">🔧</span>
+                <h3>MANTENIMIENTO</h3>
+                <span class="tag">PREVENTIVO</span>
+            </div>
+            <div class="menu-card" onclick="abrirModal('privado')">
+                <span class="icon">🔒</span>
+                <h3>PRIVADO</h3>
+                <span class="tag">CONTROL</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====== CHAT BOT ====== -->
+    <div class="chat-bot-container">
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header-bot">
+                <div class="avatar">🤖</div>
+                <div class="info">
+                    <h4>PINGINT BOT</h4>
+                    <span>🟢 EN LÍNEA · ASISTENTE VIRTUAL</span>
+                </div>
+                <button class="close-chat" onclick="toggleChat()">✕</button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="chat-msg bot">
+                    <div class="bubble">
+                        👋 ¡HOLA! SOY <strong>PINGINT</strong>, TU ASISTENTE VIRTUAL.<br>
+                        ¿EN QUÉ PUEDO AYUDARTE HOY?
+                        <span class="time">AHORA</span>
+                    </div>
+                </div>
+                <div class="chat-msg bot">
+                    <div class="bubble">
+                        📋 PUEDES ELEGIR ENTRE ESTOS SERVICIOS:<br>
+                        💻 INFORMÁTICA · ⚙️ SOFTWARE · 🌳 FORESTAL · 🏗️ CIVIL · 🏛️ ARQUITECTURA<br>
+                        🏘️ INMOBILIARIO · ⚖️ JURÍDICOS · 🖨️ IMPRESIÓN · 📄 PÚBLICOS<br>
+                        📱 RECARGAS · 💳 PAGOS · 🔧 MANTENIMIENTO · 🔒 PRIVADO
+                        <span class="time">AHORA</span>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="chatInput" placeholder="ESCRIBE TU MENSAJE..." onkeypress="if(event.key==='Enter') enviarChat()">
+                <button onclick="enviarChat()">▶</button>
+            </div>
+        </div>
+        <div class="chat-bot-btn" onclick="toggleChat()">
+            🤖
+        </div>
+    </div>
+
+    <!-- ================================================== -->
+    <!-- ====== MODALES ====== -->
+    <!-- ================================================== -->
+
+    <!-- MODAL SERVICIOS PROFESIONALES -->
+    <div class="modal-overlay" id="modalServicios">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="modalTitulo">💼 SERVICIO PROFESIONAL</h2>
+                <button class="close" onclick="cerrarModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="formServicios" onsubmit="return false;">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>NOMBRE <span class="req">*</span></label>
+                            <input type="text" id="sNombre" placeholder="NOMBRE COMPLETO">
+                        </div>
+                        <div class="form-group">
+                            <label>TELÉFONO <span class="req">*</span></label>
+                            <input type="tel" id="sTelefono" placeholder="2331019490">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>EMAIL</label>
+                        <input type="email" id="sEmail" placeholder="CLIENTE@EMAIL.COM">
+                    </div>
+                    <div class="form-group">
+                        <label>DESCRIPCIÓN <span class="req">*</span></label>
+                        <textarea id="sDescripcion" placeholder="DESCRIBE DETALLADAMENTE EL SERVICIO QUE NECESITAS..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>ANTEPRESUPUESTO</label>
+                        <input type="number" id="sPresupuesto" placeholder="MONTO ESTIMADO" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>ARCHIVOS</label>
+                        <div class="file-upload-wrapper">
+                            <input type="file" id="sArchivos" multiple onchange="subirArchivos('s')">
+                            <button class="btn-upload">📤 SUBIR ARCHIVOS</button>
+                        </div>
+                        <div class="file-list" id="sFileList"></div>
+                    </div>
+                    <button type="button" class="btn-submit" onclick="enviarServicio()">📤 ENVIAR SOLICITUD</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL INMOBILIARIO -->
+    <div class="modal-overlay" id="modalInmobiliario">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>🏘️ DESARROLLO INMOBILIARIO</h2>
+                <button class="close" onclick="cerrarModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="formInm" onsubmit="return false;">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>NOMBRE <span class="req">*</span></label>
+                            <input type="text" id="inmNombre" placeholder="NOMBRE COMPLETO">
+                        </div>
+                        <div class="form-group">
+                            <label>TELÉFONO <span class="req">*</span></label>
+                            <input type="tel" id="inmTelefono" placeholder="2331019490">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>EMAIL</label>
+                        <input type="email" id="inmEmail" placeholder="CLIENTE@EMAIL.COM">
+                    </div>
+                    <div class="form-group">
+                        <label>TIPO <span class="req">*</span></label>
+                        <select id="inmTipo">
+                            <option value="COMPRA">🏠 COMPRA</option>
+                            <option value="VENTA">🏷️ VENTA</option>
+                            <option value="AVALUO">📊 AVALÚO</option>
+                            <option value="GESTION">📋 GESTIÓN</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>🏡 PREDIOS EN VENTA</label>
+                        <div class="carousel-container" id="carouselInm">
+                            <div class="carousel-slides" id="carouselSlidesInm">
+                                <div class="carousel-slide">
+                                    <div class="slide-content">
+                                        🏠 PREDIO 1<br>
+                                        <small>CALLE PRINCIPAL #123 · 250M² · $1,200,000</small>
+                                    </div>
+                                </div>
+                                <div class="carousel-slide">
+                                    <div class="slide-content">
+                                        🌳 PREDIO 2<br>
+                                        <small>AVENIDA REFORMA #456 · 500M² · $2,500,000</small>
+                                    </div>
+                                </div>
+                                <div class="carousel-slide">
+                                    <div class="slide-content">
+                                        🏘️ PREDIO 3<br>
+                                        <small>CALLE INDEPENDENCIA #789 · 350M² · $1,800,000</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="carousel-btn prev" onclick="moverCarousel('Inm', -1)">❮</button>
+                            <button class="carousel-btn next" onclick="moverCarousel('Inm', 1)">❯</button>
+                        </div>
+                        <div class="carousel-dots" id="carouselDotsInm"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>UBICACIÓN <span class="req">*</span></label>
+                        <input type="text" id="inmUbicacion" placeholder="CALLE, NÚMERO, COLONIA, CIUDAD">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>SUPERFICIE (M²) <span class="req">*</span></label>
+                            <input type="number" id="inmSuperficie" placeholder="250" min="1">
+                        </div>
+                        <div class="form-group">
+                            <label>PRECIO <span class="req">*</span></label>
+                            <input type="number" id="inmPrecio" placeholder="1200000" min="0">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>DESCRIPCIÓN</label>
+                        <textarea id="inmDescripcion" placeholder="CARACTERÍSTICAS DEL PREDIO..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>ARCHIVOS (FOTOS, PLANOS)</label>
+                        <div class="file-upload-wrapper">
+                            <input type="file" id="inmArchivos" multiple accept="image/*,.pdf,.doc,.docx" onchange="subirArchivos('inm')">
+                            <button class="btn-upload">📤 SUBIR ARCHIVOS</button>
+                        </div>
+                        <div class="file-list" id="inmFileList"></div>
+                    </div>
+                    <button type="button" class="btn-submit cyan" onclick="enviarInm()">📤 ENVIAR SOLICITUD</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL RECARGAS -->
+    <div class="modal-overlay" id="modalRecargas">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>📱 RECARGAS</h2>
+                <button class="close" onclick="cerrarModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="formRecargas" onsubmit="return false;">
+                    <div class="form-group">
+                        <label>COMPAÑÍA <span class="req">*</span></label>
+                        <select id="rCompania">
+                            <option value="TELCEL">📱 TELCEL</option>
+                            <option value="MOVISTAR">📱 MOVISTAR</option>
+                            <option value="AT&T">📱 AT&T</option>
+                            <option value="UNEFON">📱 UNEFON</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>TIPO <span class="req">*</span></label>
+                        <div class="recarga-opciones">
+                            <div class="recarga-opcion selected" onclick="selTipoRecarga('NORMAL', this)">
+                                <span class="icono">📱</span>
+                                <span class="nombre">NORMAL</span>
+                            </div>
+                            <div class="recarga-opcion" onclick="selTipoRecarga('PAQUETE', this)">
+                                <span class="icono">📦</span>
+                                <span class="nombre">PAQUETE</span>
+                            </div>
+                            <div class="recarga-opcion" onclick="selTipoRecarga('DATOS', this)">
+                                <span class="icono">🌐</span>
+                                <span class="nombre">DATOS</span>
+                            </div>
+                        </div>
+                        <input type="hidden" id="rTipoRecarga" value="NORMAL">
+                    </div>
+                    <div class="form-group" id="rPaqueteGroup" style="display:none;">
+                        <label>PAQUETE <span class="req">*</span></label>
+                        <select id="rPaquete">
+                            <option value="PAQUETE 50MB - $10">📦 50MB - $10</option>
+                            <option value="PAQUETE 100MB - $20">📦 100MB - $20</option>
+                            <option value="PAQUETE 200MB - $35">📦 200MB - $35</option>
+                            <option value="PAQUETE 500MB - $50">📦 500MB - $50</option>
+                            <option value="PAQUETE 1GB - $80">📦 1GB - $80</option>
+                            <option value="PAQUETE 2GB - $150">📦 2GB - $150</option>
+                            <option value="PAQUETE 5GB - $300">📦 5GB - $300</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="rMontoGroup">
+                        <label>MONTO <span class="req">*</span></label>
+                        <input type="number" id="rMonto" placeholder="100" min="10">
+                    </div>
+                    <div class="form-group">
+                        <label>NÚMERO <span class="req">*</span></label>
+                        <input type="tel" id="rNumero" placeholder="2331019490">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>NOMBRE <span class="req">*</span></label>
+                            <input type="text" id="rNombre" placeholder="JUAN PÉREZ">
+                        </div>
+                        <div class="form-group">
+                            <label>CONTACTO <span class="req">*</span></label>
+                            <input type="tel" id="rContacto" placeholder="2331019490">
+                        </div>
+                    </div>
+                    <button type="button" class="btn-submit green" onclick="enviarRecarga()">📤 ENVIAR</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PAGOS -->
+    <div class="modal-overlay" id="modalPagos">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>💳 PAGO DE SERVICIOS</h2>
+                <button class="close" onclick="cerrarModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="formPagos" onsubmit="return false;">
+                    <div class="form-group">
+                        <label>SERVICIO <span class="req">*</span></label>
+                        <select id="pServicio">
+                            <option value="TELMEX">📞 TELMEX</option>
+                            <option value="CFE">💡 CFE</option>
+                            <option value="AGUA">💧 AGUA</option>
+                            <option value="GAS">🔥 GAS</option>
+                            <option value="SKY">📺 SKY</option>
+                            <option value="DISH">📡 DISH</option>
+                            <option value="IZZI">📶 IZZI</option>
+                            <option value="TOTALPLAY">🌐 TOTALPLAY</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>CUENTA <span class="req">*</span></label>
+                        <input type="text" id="pCuenta" placeholder="NÚMERO DE CUENTA">
+                    </div>
+                    <div class="form-group">
+                        <label>MONTO <span class="req">*</span></label>
+                        <input type="number" id="pMonto" placeholder="500" min="1">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>NOMBRE <span class="req">*</span></label>
+                            <input type="text" id="pNombre" placeholder="JUAN PÉREZ">
+                        </div>
+                        <div class="form-group">
+                            <label>CONTACTO <span class="req">*</span></label>
+                            <input type="tel" id="pTelefono" placeholder="2331019490">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>EMAIL</label>
+                        <input type="email" id="pEmail" placeholder="CLIENTE@EMAIL.COM">
+                    </div>
+                    <button type="button" class="btn-submit" onclick="enviarPago()">📤 ENVIAR</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL IMPRESIÓN -->
+    <div class="modal-overlay" id="modalImpresion">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>🖨️ IMPRESIÓN Y ESCANEO</h2>
+                <button class="close" onclick="cerrarModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="formImpresion" onsubmit="return false;">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>NOMBRE <span class="req">*</span></label>
+                            <input type="text" id="iNombre" placeholder="NOMBRE COMPLETO">
+                        </div>
+                        <div class="form-group">
+                            <label>TELÉFONO <span class="req">*</span></label>
+                            <input type="tel" id="iTelefono" placeholder="2331019490">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>EMAIL</label>
+                        <input type="email" id="iEmail" placeholder="CLIENTE@EMAIL.COM">
+                    </div>
+                    <div class="form-group">
+                        <label>ARCHIVO <span class="req">*</span></label>
+                        <div class="file-upload-wrapper">
+                            <input type="file" id="iArchivo" onchange="subirArchivoImpresion(event)">
+                            <button class="btn-upload">📤 SUBIR ARCHIVO</button>
+                        </div>
+                        <div class="file-list" id="iFileList"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>TIPO <span class="req">*</span></label>
+                        <div class="print-options">
+                            <div class="print-btn" onclick="selImpresion('blanco_negro', this)">
+                                <span class="icon">⚫</span> B/N
+                            </div>
+                            <div class="print-btn" onclick="selImpresion('color', this)">
+                                <span class="icon">🎨</span> COLOR
+                            </div>
+                            <div class="print-btn" onclick="selImpresion('ticket', this)">
+                                <span class="icon">🧾</span> TICKET
+                            </div>
+                            <div class="print-btn" onclick="selImpresion('escanear', this)">
+                                <span class="icon">📠</span> ESCANEAR
+                            </div>
+                        </div>
+                        <input type="hidden" id="iTipo" value="">
+                    </div>
+                    <div class="form-group">
+                        <label>COPIAS</label>
+                        <input type="number" id="iCopias" value="1" min="1" max="100">
+                    </div>
+                    <div class="form-group">
+                        <label>ANTEPRESUPUESTO</label>
+                        <input type="number" id="iPresupuesto" placeholder="MONTO ESTIMADO" min="0">
+                    </div>
+                    <button type="button" class="btn-submit purple" onclick="enviarImpresion()">📤 ENVIAR</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL SERVICIOS PÚBLICOS -->
+    <div class="modal-overlay" id="modalPublicos">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>📄 SERVICIOS PÚBLICOS</h2>
+                <button class="close" onclick="cerrarModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="formPublicos" onsubmit="return false;">
+                    <div class="form-group">
+                        <label>TIPO <span class="req">*</span></label>
+                        <select id="pubTipo">
+                            <option value="ACTA DE NACIMIENTO">📜 ACTA DE NACIMIENTO</option>
+                            <option value="ACTA DE DEFUNCIÓN">⚰️ ACTA DE DEFUNCIÓN</option>
+                            <option value="ACTA DE MATRIMONIO">💍 ACTA DE MATRIMONIO</option>
+                            <option value="CONSTANCIA FISCAL">📊 CONSTANCIA FISCAL</option>
+                            <option value="IMSS">🏥 IMSS</option>
+                            <option value="ISSSTE">🏛️ ISSSTE</option>
+                            <option value="ISTEP">📋 ISTEP</option>
+                            <option value="INFONAVIT">🏠 INFONAVIT</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>NOMBRE <span class="req">*</span></label>
+                            <input type="text" id="pubNombre" placeholder="NOMBRE COMPLETO">
+                        </div>
+                        <div class="form-group">
+                            <label>TELÉFONO <span class="req">*</span></label>
+                            <input type="tel" id="pubTelefono" placeholder="2331019490">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>CURP <span class="req">*</span></label>
+                        <input type="text" id="pubCurp" placeholder="CURP" style="text-transform:uppercase;">
+                    </div>
+                    <div class="form-group">
+                        <label>EMAIL</label>
+                        <input type="email" id="pubEmail" placeholder="CLIENTE@EMAIL.COM">
+                    </div>
+                    <div class="form-group">
+                        <label>OBSERVACIONES</label>
+                        <textarea id="pubObs" placeholder="DETALLES ADICIONALES..."></textarea>
+                    </div>
+                    <button type="button" class="btn-submit orange" onclick="enviarPublico()">📤 ENVIAR</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL MANTENIMIENTO -->
+    <div class="modal-overlay" id="modalMantenimiento">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>🔧 MANTENIMIENTO</h2>
+                <button class="close" onclick="cerrarModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="formMtto" onsubmit="return false;">
+                    <div class="form-group">
+                        <label>TIPO <span class="req">*</span></label>
+                        <select id="mTipo">
+                            <option value="PREVENTIVO">🛠️ PREVENTIVO</option>
+                            <option value="CORRECTIVO">🔧 CORRECTIVO</option>
+                            <option value="COTIZACION">📊 COTIZACIÓN</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>NOMBRE <span class="req">*</span></label>
+                            <input type="text" id="mNombre" placeholder="NOMBRE COMPLETO">
+                        </div>
+                        <div class="form-group">
+                            <label>TELÉFONO <span class="req">*</span></label>
+                            <input type="tel" id="mTelefono" placeholder="2331019490">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>EMAIL</label>
+                        <input type="email" id="mEmail" placeholder="CLIENTE@EMAIL.COM">
+                    </div>
+                    <div class="form-group">
+                        <label>DESCRIPCIÓN <span class="req">*</span></label>
+                        <textarea id="mDescripcion" placeholder="DESCRIBE EL EQUIPO Y LA FALLA..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>ARCHIVOS (FOTOS)</label>
+                        <div class="file-upload-wrapper">
+                            <input type="file" id="mArchivos" multiple onchange="subirArchivos('m')">
+                            <button class="btn-upload">📤 SUBIR ARCHIVOS</button>
+                        </div>
+                        <div class="file-list" id="mFileList"></div>
+                    </div>
+                    <button type="button" class="btn-submit orange" onclick="enviarMtto()">📤 ENVIAR</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PRIVADO -->
+    <div class="modal-overlay" id="modalPrivado">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>🔒 MÓDULO PRIVADO</h2>
+                <button class="close" onclick="cerrarModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="acceso-container">
+                    <div class="form-group">
+                        <label>🔑 CLAVE <span class="req">*</span></label>
+                        <input type="password" id="claveAcceso" placeholder="INGRESA TU CLAVE">
+                    </div>
+                    <button type="button" class="btn-submit" onclick="verificarAcceso()">🔓 ACCEDER</button>
+                </div>
+                <div id="panelPrivado" style="display:none; margin-top:10px;">
+                    <div class="usuario-badge" id="usuarioBadge">👤 USUARIO: ---</div>
+                    <h3>📋 CONTROL DE PERSONAL</h3>
+                    <div class="reloj-privado">
+                        <div class="hora-box">
+                            <div class="label">⏱️ HORA</div>
+                            <div class="time" id="horaActualPrivado">--:--:--</div>
+                        </div>
+                        <div class="hora-box">
+                            <div class="label">🟢 ENTRADA</div>
+                            <div class="time entrada" id="horaEntradaDisplay">--:--:--</div>
+                        </div>
+                        <div class="hora-box">
+                            <div class="label">🔴 SALIDA</div>
+                            <div class="time salida" id="horaSalidaDisplay">--:--:--</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>INGENIER@ <span class="req">*</span></label>
+                        <select id="privIngeniero">
+                            <option value="">-- SELECCIONAR --</option>
+                            <option value="ING. ANA KAREN HERNANDEZ LORENZO">ANA KAREN HERNANDEZ</option>
+                            <option value="ING. DIANA LUNA PATRICIO">DIANA LUNA PATRICIO</option>
+                            <option value="ING. ROBERTO POPOCA PORTILLO">ROBERTO POPOCA</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>🟢 ENTRADA <span class="req">*</span></label>
+                            <input type="text" id="privEntrada" readonly style="color:#00c853; font-weight:700; font-size:14px;">
+                            <button type="button" class="btn-reloj" onclick="capturarEntrada()">📸 CAPTURAR</button>
+                        </div>
+                        <div class="form-group">
+                            <label>🔴 SALIDA</label>
+                            <input type="text" id="privSalida" readonly style="color:#ff6d00; font-weight:700; font-size:14px;">
+                            <button type="button" class="btn-reloj" onclick="capturarSalida()">📸 CAPTURAR</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>📝 ACTIVIDADES <span class="req">*</span></label>
+                        <textarea id="privActividades" placeholder="DESCRIBE LAS ACTIVIDADES REALIZADAS..."></textarea>
+                    </div>
+                    <button type="button" class="btn-submit" onclick="enviarPrivado()">📤 ENVIAR</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====== TICKET MODAL ====== -->
+    <div class="modal-overlay" id="modalTicket">
+        <div class="modal ticket-modal">
+            <div class="modal-header">
+                <h2>🧾 TICKET DE COMPRA</h2>
+                <button class="close" onclick="cerrarModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="ticket-content" id="ticketContent">
+                    <div class="ticket-header">
+                        <h3>🧠 PINGINTLAB</h3>
+                        <p>INGENIERIA INTEGRAL</p>
+                        <p style="font-size:10px;">TEL: 2331019490</p>
+                    </div>
+                    <div id="ticketBody">
+                        <p>📅 FECHA: <span id="ticketFecha"></span></p>
+                        <p>⏰ HORA: <span id="ticketHora"></span></p>
+                        <p>👤 CLIENTE: <span id="ticketCliente"></span></p>
+                        <div class="ticket-line"></div>
+                        <p>📋 SERVICIO: <span id="ticketServicio"></span></p>
+                        <p>💰 TOTAL: <span id="ticketTotal"></span></p>
+                        <div class="ticket-line"></div>
+                        <p style="font-size:11px;">📝 <span id="ticketDetalle"></span></p>
+                    </div>
+                    <div class="ticket-total" id="ticketTotalDisplay">$0.00</div>
+                    <div class="ticket-footer">
+                        ¡GRACIAS POR SU COMPRA!<br>
+                        PINGINTLAB - INNOVACIÓN Y TECNOLOGÍA
+                    </div>
+                </div>
+                <button class="btn-imprimir" onclick="imprimirTicket()">🖨️ IMPRIMIR TICKET</button>
+                <button class="btn-submit" style="margin-top:8px;" onclick="cerrarModal()">✕ CERRAR</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====== TOAST ====== -->
+    <div id="toast" class="toast">
+        <span id="toastIcon">✅</span>
+        <span id="toastMsg">MENSAJE</span>
+    </div>
+
+    <!-- ================================================== -->
+    <!-- ====== JAVASCRIPT ====== -->
+    <!-- ================================================== -->
+    <script>
+        // ============================================================
+        // CONFIGURACIÓN
+        // ============================================================
+        const NUMEROS_WHATSAPP = ['2331019490', '2331216224'];
+        const archivosMap = { s: [], inm: [], m: [] };
+        let archivoImpresion = null;
+        let tipoRecarga = 'NORMAL';
+        let tipoImpresion = '';
+        let slideActualInm = 0;
+        let intervaloReloj = null;
+        let usuarioAcceso = '';
+        let tipoServicio = '';
+
+        // ============================================================
+        // CHAT BOT
+        // ============================================================
+        function toggleChat() {
+            const window = document.getElementById('chatWindow');
+            window.classList.toggle('open');
+            if (window.classList.contains('open')) {
+                document.getElementById('chatInput').focus();
+                agregarMensajeBot('👋 ¡HOLA! SOY PINGINT, TU ASISTENTE. ¿QUÉ SERVICIO TE INTERESA?');
+            }
+        }
+
+        function agregarMensajeBot(texto) {
+            const container = document.getElementById('chatMessages');
+            const div = document.createElement('div');
+            div.className = 'chat-msg bot';
+            div.innerHTML = `<div class="bubble">${texto.toUpperCase()}<span class="time">AHORA</span></div>`;
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function agregarMensajeUser(texto) {
+            const container = document.getElementById('chatMessages');
+            const div = document.createElement('div');
+            div.className = 'chat-msg user';
+            div.innerHTML = `<div class="bubble">${texto.toUpperCase()}<span class="time">AHORA</span></div>`;
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function enviarChat() {
+            const input = document.getElementById('chatInput');
+            const texto = input.value.trim();
+            if (!texto) return;
+            agregarMensajeUser(texto);
+            input.value = '';
+
+            const msg = texto.toLowerCase();
+            if (msg.includes('hola') || msg.includes('buenos') || msg.includes('saludos')) {
+                agregarMensajeBot('😊 ¡HOLA! ¿EN QUÉ PUEDO AYUDARTE? PUEDES ELEGIR ENTRE: INFORMÁTICA, SOFTWARE, FORESTAL, CIVIL, ARQUITECTURA, INMOBILIARIO, JURÍDICOS, IMPRESIÓN, PÚBLICOS, RECARGAS, PAGOS, MANTENIMIENTO O PRIVADO.');
+            } else if (msg.includes('informatica') || msg.includes('informática') || msg.includes('sistemas')) {
+                agregarMensajeBot('💻 PARA SERVICIOS DE INFORMÁTICA, HAZ CLIC EN EL BOTÓN "INFORMÁTICA" DEL MENÚ PRINCIPAL Y COMPLETA EL FORMULARIO.');
+            } else if (msg.includes('software')) {
+                agregarMensajeBot('⚙️ PARA INGENIERÍA DE SOFTWARE, HAZ CLIC EN EL BOTÓN "SOFTWARE" DEL MENÚ PRINCIPAL Y COMPLETA EL FORMULARIO.');
+            } else if (msg.includes('forestal')) {
+                agregarMensajeBot('🌳 PARA INGENIERÍA FORESTAL, HAZ CLIC EN EL BOTÓN "FORESTAL" DEL MENÚ PRINCIPAL Y DESCRIBE TU PROYECTO.');
+            } else if (msg.includes('civil')) {
+                agregarMensajeBot('🏗️ PARA INGENIERÍA CIVIL, HAZ CLIC EN "CIVIL" EN EL MENÚ Y COMPLETA LOS DETALLES DE TU PROYECTO.');
+            } else if (msg.includes('arquitectura')) {
+                agregarMensajeBot('🏛️ PARA ARQUITECTURA, HAZ CLIC EN "ARQUITECTURA" EN EL MENÚ Y DESCRIBE TU PROYECTO DE DISEÑO.');
+            } else if (msg.includes('inmobiliario') || msg.includes('predio')) {
+                agregarMensajeBot('🏘️ PARA DESARROLLO INMOBILIARIO, HAZ CLIC EN "INMOBILIARIO" Y PODRÁS VER PREDIOS EN VENTA Y REALIZAR TU SOLICITUD.');
+            } else if (msg.includes('juridico') || msg.includes('legal')) {
+                agregarMensajeBot('⚖️ PARA SERVICIOS JURÍDICOS, HAZ CLIC EN "JURÍDICOS" Y DESCRIBE TU CASO PARA RECIBIR ASESORÍA.');
+            } else if (msg.includes('impresion') || msg.includes('imprimir')) {
+                agregarMensajeBot('🖨️ PARA IMPRESIÓN, HAZ CLIC EN "IMPRESIÓN", SUBE TU ARCHIVO Y ELIGE EL TIPO DE IMPRESIÓN (B/N, COLOR, TICKET O ESCANEAR).');
+            } else if (msg.includes('publico') || msg.includes('acta') || msg.includes('trámite')) {
+                agregarMensajeBot('📄 PARA SERVICIOS PÚBLICOS, HAZ CLIC EN "PÚBLICOS" Y SELECCIONA EL TRÁMITE QUE NECESITAS (ACTAS, IMSS, INFONAVIT, ETC.).');
+            } else if (msg.includes('recarga')) {
+                agregarMensajeBot('📱 PARA RECARGAS, HAZ CLIC EN "RECARGAS", ELIGE COMPAÑÍA Y TIPO (NORMAL, PAQUETE O DATOS).');
+            } else if (msg.includes('pago') || msg.includes('pagar')) {
+                agregarMensajeBot('💳 PARA PAGO DE SERVICIOS, HAZ CLIC EN "PAGOS", SELECCIONA EL SERVICIO (TELMEX, CFE, AGUA, ETC.) Y COMPLETA LOS DATOS.');
+            } else if (msg.includes('mantenimiento')) {
+                agregarMensajeBot('🔧 PARA MANTENIMIENTO, HAZ CLIC EN "MANTENIMIENTO", ELIGE EL TIPO (PREVENTIVO, CORRECTIVO O COTIZACIÓN) Y DESCRIBE LA FALLA.');
+            } else if (msg.includes('privado')) {
+                agregarMensajeBot('🔒 PARA EL MÓDULO PRIVADO, HAZ CLIC EN "PRIVADO" E INGRESA TU CLAVE DE ACCESO (AKHL@PINGINT, DLP@PINGINT O RPP@PINGINT).');
+            } else if (msg.includes('gracias')) {
+                agregarMensajeBot('🎉 ¡GRACIAS A TI POR CONFIAR EN PINGINTLAB! ESTAMOS PARA SERVIRTE. 🤖');
+            } else {
+                agregarMensajeBot('🤔 ¿PUEDES SER MÁS ESPECÍFICO? PUEDES DECIRME: INFORMÁTICA, SOFTWARE, FORESTAL, CIVIL, ARQUITECTURA, INMOBILIARIO, JURÍDICOS, IMPRESIÓN, PÚBLICOS, RECARGAS, PAGOS, MANTENIMIENTO O PRIVADO.');
+            }
+        }
+
+        // ============================================================
+        // FUNCIONES AUXILIARES
+        // ============================================================
+        function obtenerFechaHora() {
+            const ahora = new Date();
+            const fecha = ahora.toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric' }).toUpperCase();
+            const hora = ahora.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            return { fecha, hora };
+        }
+
+        function obtenerHora() {
+            return new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        }
+
+        function mostrarToast(msg, tipo = 'success') {
+            const toast = document.getElementById('toast');
+            const icon = document.getElementById('toastIcon');
+            const msj = document.getElementById('toastMsg');
+            const iconos = { success: '✅', error: '❌', info: 'ℹ️' };
+            icon.textContent = iconos[tipo] || '✅';
+            msj.textContent = msg.toUpperCase();
+            toast.className = `toast ${tipo}`;
+            void toast.offsetWidth;
+            toast.classList.add('show');
+            clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(() => toast.classList.remove('show'), 3500);
+        }
+
+        function formatearTamaño(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+        }
+
+        function getIconoArchivo(nombre) {
+            const ext = nombre.split('.').pop().toLowerCase();
+            const iconos = { 'pdf': '📄', 'doc': '📝', 'docx': '📝', 'xls': '📊', 'xlsx': '📊', 'jpg': '🖼️', 'jpeg': '🖼️', 'png': '🖼️', 'gif': '🖼️', 'txt': '📃', 'zip': '📦', 'rar': '📦' };
+            return iconos[ext] || '📎';
+        }
+
+        function enviarWhatsApp(mensaje) {
+            const codificado = encodeURIComponent(mensaje);
+            NUMEROS_WHATSAPP.forEach(num => {
+                window.open('https://wa.me/' + num + '?text=' + codificado, '_blank');
+            });
+            mostrarToast(`📱 MENSAJE ENVIADO A ${NUMEROS_WHATSAPP.join(' Y ')}`, 'success');
+            setTimeout(() => {
+                agregarMensajeBot('🎉 ¡GRACIAS POR TU COLABORACIÓN! 🤖 ATENTAMENTE: PINGINTLAB');
+            }, 1500);
+        }
+
+        // ============================================================
+        // TICKET
+        // ============================================================
+        function mostrarTicket(cliente, servicio, total, detalle = '') {
+            const { fecha, hora } = obtenerFechaHora();
+            document.getElementById('ticketFecha').textContent = fecha;
+            document.getElementById('ticketHora').textContent = hora;
+            document.getElementById('ticketCliente').textContent = cliente || 'CLIENTE';
+            document.getElementById('ticketServicio').textContent = servicio || 'SERVICIO';
+            document.getElementById('ticketTotal').textContent = total || '$0.00';
+            document.getElementById('ticketTotalDisplay').textContent = total || '$0.00';
+            document.getElementById('ticketDetalle').textContent = detalle || '---';
+            document.getElementById('modalTicket').classList.add('active');
+            agregarMensajeBot('🧾 ¡TICKET GENERADO! PUEDES IMPRIMIRLO O GUARDARLO.');
+        }
+
+        function imprimirTicket() {
+            window.print();
+            mostrarToast('🖨️ ENVIANDO A IMPRESIÓN...', 'info');
+        }
+
+        // ============================================================
+        // CARRUSEL
+        // ============================================================
+        function initCarousel(id) {
+            const slides = document.querySelectorAll('#carouselSlides' + id + ' .carousel-slide');
+            const dots = document.getElementById('carouselDots' + id);
+            if (slides.length === 0) return;
+            dots.innerHTML = '';
+            slides.forEach((_, i) => {
+                const dot = document.createElement('div');
+                dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+                dot.onclick = () => irSlide(id, i);
+                dots.appendChild(dot);
+            });
+            actualizarCarousel(id);
+        }
+
+        function moverCarousel(id, dir) {
+            const slides = document.querySelectorAll('#carouselSlides' + id + ' .carousel-slide');
+            const actual = id === 'Inm' ? slideActualInm : 0;
+            const nuevo = (actual + dir + slides.length) % slides.length;
+            if (id === 'Inm') slideActualInm = nuevo;
+            irSlide(id, nuevo);
+        }
+
+        function irSlide(id, index) {
+            const container = document.getElementById('carouselSlides' + id);
+            const dots = document.querySelectorAll('#carouselDots' + id + ' .carousel-dot');
+            if (!container) return;
+            container.style.transform = 'translateX(-' + (index * 100) + '%)';
+            dots.forEach((dot, i) => {
+                dot.className = 'carousel-dot' + (i === index ? ' active' : '');
+            });
+        }
+
+        function actualizarCarousel(id) {
+            const container = document.getElementById('carouselSlides' + id);
+            if (!container) return;
+            const slides = container.querySelectorAll('.carousel-slide');
+            if (slides.length === 0) return;
+            const index = id === 'Inm' ? slideActualInm : 0;
+            container.style.transform = 'translateX(-' + (index * 100) + '%)';
+        }
+
+        // ============================================================
+        // RECARGAS
+        // ============================================================
+        function selTipoRecarga(tipo, el) {
+            tipoRecarga = tipo;
+            document.getElementById('rTipoRecarga').value = tipo;
+            document.querySelectorAll('.recarga-opcion').forEach(e => e.classList.remove('selected'));
+            el.classList.add('selected');
+            const paq = document.getElementById('rPaqueteGroup');
+            const mon = document.getElementById('rMontoGroup');
+            if (tipo === 'PAQUETE') {
+                paq.style.display = 'block';
+                mon.style.display = 'none';
+                agregarMensajeBot('📦 SELECCIONA EL PAQUETE QUE DESEAS RECARGAR.');
+            } else {
+                paq.style.display = 'none';
+                mon.style.display = 'block';
+                agregarMensajeBot('📱 INGRESA EL MONTO PARA TU RECARGA.');
+            }
+        }
+
+        // ============================================================
+        // IMPRESIÓN
+        // ============================================================
+        function selImpresion(tipo, el) {
+            tipoImpresion = tipo;
+            document.getElementById('iTipo').value = tipo;
+            document.querySelectorAll('.print-btn').forEach(e => e.classList.remove('selected'));
+            el.classList.add('selected');
+            const nombres = { 'blanco_negro': 'B/N', 'color': 'COLOR', 'ticket': 'TICKET', 'escanear': 'ESCANEAR' };
+            mostrarToast('✅ ' + (nombres[tipo] || tipo), 'success');
+            agregarMensajeBot('🖨️ IMPRESIÓN SELECCIONADA: ' + (nombres[tipo] || tipo));
+        }
+
+        // ============================================================
+        // ARCHIVOS
+        // ============================================================
+        function subirArchivos(prefix) {
+            const input = document.getElementById(prefix + 'Archivos');
+            const files = input.files;
+            if (files.length === 0) return;
+            if (archivosMap[prefix].length + files.length > 10) {
+                mostrarToast('MÁXIMO 10 ARCHIVOS.', 'error');
+                return;
+            }
+            Array.from(files).forEach(file => {
+                if (file.size > 10 * 1024 * 1024) {
+                    mostrarToast(`EL ARCHIVO ${file.name} EXCEDE 10MB.`, 'error');
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    archivosMap[prefix].push({
+                        id: Date.now() + Math.random(),
+                        nombre: file.name,
+                        tamaño: file.size,
+                        datos: e.target.result
+                    });
+                    renderArchivos(prefix);
+                };
+                reader.readAsDataURL(file);
+            });
+            input.value = '';
+        }
+
+        function eliminarArchivo(prefix, id) {
+            archivosMap[prefix] = archivosMap[prefix].filter(a => a.id !== id);
+            renderArchivos(prefix);
+        }
+
+        function renderArchivos(prefix) {
+            const container = document.getElementById(prefix + 'FileList');
+            if (!container) return;
+            if (archivosMap[prefix].length === 0) { container.innerHTML = ''; return; }
+            let html = '';
+            archivosMap[prefix].forEach(a => {
+                html += `<span class="file-tag">${getIconoArchivo(a.nombre)} ${a.nombre} (${formatearTamaño(a.tamaño)}) <span class="remove" onclick="eliminarArchivo('${prefix}', ${a.id})">✕</span></span>`;
+            });
+            container.innerHTML = html;
+        }
+
+        function subirArchivoImpresion(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            if (file.size > 10 * 1024 * 1024) {
+                mostrarToast(`EL ARCHIVO ${file.name} EXCEDE 10MB.`, 'error');
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                archivoImpresion = {
+                    id: Date.now() + Math.random(),
+                    nombre: file.name,
+                    tamaño: file.size,
+                    datos: e.target.result
+                };
+                renderArchivoImpresion();
+                mostrarToast(`✅ ${file.name} SUBIDO`, 'success');
+            };
+            reader.readAsDataURL(file);
+            document.getElementById('iArchivo').value = '';
+        }
+
+        function eliminarArchivoImpresion() {
+            archivoImpresion = null;
+            renderArchivoImpresion();
+        }
+
+        function renderArchivoImpresion() {
+            const container = document.getElementById('iFileList');
+            if (!archivoImpresion) { container.innerHTML = ''; return; }
+            container.innerHTML = `<span class="file-tag">${getIconoArchivo(archivoImpresion.nombre)} ${archivoImpresion.nombre} (${formatearTamaño(archivoImpresion.tamaño)}) <span class="remove" onclick="eliminarArchivoImpresion()">✕</span></span>`;
+        }
+
+        // ============================================================
+        // MODALES
+        // ============================================================
+        const titulosServicios = {
+            'informatica': '💻 INGENIERÍA EN INFORMÁTICA',
+            'software': '⚙️ INGENIERÍA EN SOFTWARE',
+            'forestal': '🌳 INGENIERÍA FORESTAL',
+            'civil': '🏗️ INGENIERÍA CIVIL',
+            'arquitectura': '🏛️ ARQUITECTURA',
+            'juridicos': '⚖️ SERVICIOS JURÍDICOS'
+        };
+
+        function abrirModal(tipo) {
+            if (tipo === 'privado') {
+                document.getElementById('modalPrivado').classList.add('active');
+                document.getElementById('panelPrivado').style.display = 'none';
+                document.getElementById('claveAcceso').value = '';
+                iniciarRelojPrivado();
+                agregarMensajeBot('🔒 ACCESO AL MÓDULO PRIVADO. INGRESA TU CLAVE.');
+                return;
+            }
+
+            if (tipo === 'inmobiliario') {
+                document.getElementById('modalInmobiliario').classList.add('active');
+                setTimeout(() => initCarousel('Inm'), 200);
+                agregarMensajeBot('🏘️ ENCUENTRA LOS MEJORES PREDIOS EN VENTA.');
+                return;
+            }
+
+            if (tipo === 'recargas') {
+                document.getElementById('modalRecargas').classList.add('active');
+                agregarMensajeBot('📱 REALIZA TU RECARGA DE MANERA RÁPIDA Y SEGURA.');
+                return;
+            }
+
+            if (tipo === 'pagos') {
+                document.getElementById('modalPagos').classList.add('active');
+                agregarMensajeBot('💳 REALIZA EL PAGO DE TUS SERVICIOS DE MANERA FÁCIL.');
+                return;
+            }
+
+            if (tipo === 'impresion') {
+                document.getElementById('modalImpresion').classList.add('active');
+                agregarMensajeBot('🖨️ SUBE TU ARCHIVO Y ELIGE EL TIPO DE IMPRESIÓN.');
+                return;
+            }
+
+            if (tipo === 'publicos') {
+                document.getElementById('modalPublicos').classList.add('active');
+                agregarMensajeBot('📄 SOLICITA TUS ACTAS Y TRÁMITES PÚBLICOS.');
+                return;
+            }
+
+            if (tipo === 'mantenimiento') {
+                document.getElementById('modalMantenimiento').classList.add('active');
+                agregarMensajeBot('🔧 SOLICITA MANTENIMIENTO CORRECTIVO O PREVENTIVO.');
+                return;
+            }
+
+            // Servicios profesionales
+            tipoServicio = tipo;
+            document.getElementById('modalTitulo').textContent = titulosServicios[tipo] || '💼 SERVICIO PROFESIONAL';
+            document.getElementById('modalServicios').classList.add('active');
+            agregarMensajeBot(`📋 SERVICIO DE ${titulosServicios[tipo] || 'SERVICIO PROFESIONAL'} SELECCIONADO. COMPLETA EL FORMULARIO.`);
+        }
+
+        function cerrarModal() {
+            document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+            document.querySelectorAll('.file-list').forEach(el => el.innerHTML = '');
+            Object.keys(archivosMap).forEach(k => archivosMap[k] = []);
+            archivoImpresion = null;
+            document.getElementById('iFileList').innerHTML = '';
+            document.getElementById('claveAcceso').value = '';
+            document.getElementById('panelPrivado').style.display = 'none';
+            if (intervaloReloj) { clearInterval(intervaloReloj);
+                intervaloReloj = null; }
+            slideActualInm = 0;
+        }
+
+        // ============================================================
+        // RELOJ PRIVADO
+        // ============================================================
+        function iniciarRelojPrivado() {
+            if (intervaloReloj) clearInterval(intervaloReloj);
+            actualizarRelojPrivado();
+            intervaloReloj = setInterval(actualizarRelojPrivado, 1000);
+        }
+
+        function actualizarRelojPrivado() {
+            document.getElementById('horaActualPrivado').textContent = obtenerHora();
+        }
+
+        function capturarEntrada() {
+            const hora = obtenerHora();
+            document.getElementById('privEntrada').value = hora;
+            document.getElementById('horaEntradaDisplay').textContent = hora;
+            mostrarToast(`✅ ENTRADA: ${hora}`, 'success');
+            agregarMensajeBot(`🟢 ENTRADA REGISTRADA A LAS ${hora}`);
+        }
+
+        function capturarSalida() {
+            const hora = obtenerHora();
+            document.getElementById('privSalida').value = hora;
+            document.getElementById('horaSalidaDisplay').textContent = hora;
+            mostrarToast(`✅ SALIDA: ${hora}`, 'success');
+            agregarMensajeBot(`🔴 SALIDA REGISTRADA A LAS ${hora}`);
+        }
+
+        // ============================================================
+        // ENVIAR SERVICIOS
+        // ============================================================
+        function enviarServicio() {
+            const nombre = document.getElementById('sNombre').value.trim();
+            const telefono = document.getElementById('sTelefono').value.trim();
+            const email = document.getElementById('sEmail').value.trim();
+            const desc = document.getElementById('sDescripcion').value.trim();
+            const presupuesto = document.getElementById('sPresupuesto').value.trim();
+            if (!nombre || !telefono || !desc) { mostrarToast('COMPLETA CAMPOS OBLIGATORIOS.', 'error'); return; }
+            const { fecha, hora } = obtenerFechaHora();
+            const titulo = titulosServicios[tipoServicio] || 'SERVICIO PROFESIONAL';
+            let msg = `🏢 PINGINTLAB - SOLICITUD DE SERVICIO\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📅 FECHA: ${fecha}\n⏰ HORA: ${hora}\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n👤 CLIENTE: ${nombre}\n📞 TELÉFONO: ${telefono}`;
+            if (email) msg += `\n📧 EMAIL: ${email}`;
+            if (presupuesto) msg += `\n💰 ANTEPRESUPUESTO: $${presupuesto}`;
+            msg += `\n📋 TIPO: ${titulo}\n\n📝 DESCRIPCIÓN:\n${desc}`;
+            if (archivosMap['s'].length > 0) {
+                msg += `\n\n📎 ARCHIVOS: ${archivosMap['s'].length}`;
+                archivosMap['s'].forEach((a, i) => msg += `\n   ${i+1}. ${a.nombre} (${formatearTamaño(a.tamaño)})`);
+            }
+            msg += `\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📱 ENVIADO DESDE PINGINTLAB`;
+            enviarWhatsApp(msg);
+            cerrarModal();
+            mostrarToast('✅ SOLICITUD ENVIADA', 'success');
+            agregarMensajeBot('✅ ¡SOLICITUD RECIBIDA! EN BREVE UN ASESOR TE CONTACTARÁ.');
+            setTimeout(() => {
+                mostrarTicket(nombre, titulo, presupuesto ? '$' + presupuesto : '$0.00', desc.substring(0, 50) + '...');
+            }, 1000);
+        }
+
+        function enviarInm() {
+            const nombre = document.getElementById('inmNombre').value.trim();
+            const telefono = document.getElementById('inmTelefono').value.trim();
+            const email = document.getElementById('inmEmail').value.trim();
+            const tipo = document.getElementById('inmTipo').value;
+            const ubicacion = document.getElementById('inmUbicacion').value.trim();
+            const superficie = document.getElementById('inmSuperficie').value.trim();
+            const precio = document.getElementById('inmPrecio').value.trim();
+            const desc = document.getElementById('inmDescripcion').value.trim();
+            if (!nombre || !telefono || !ubicacion || !superficie || !precio) { mostrarToast('COMPLETA CAMPOS OBLIGATORIOS.', 'error'); return; }
+            const { fecha, hora } = obtenerFechaHora();
+            let msg = `🏢 PINGINTLAB - SOLICITUD INMOBILIARIA\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📅 FECHA: ${fecha}\n⏰ HORA: ${hora}\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n👤 CLIENTE: ${nombre}\n📞 TELÉFONO: ${telefono}`;
+            if (email) msg += `\n📧 EMAIL: ${email}`;
+            msg += `\n📋 TIPO: ${tipo}\n📍 UBICACIÓN: ${ubicacion}\n📐 SUPERFICIE: ${superficie} M²\n💰 PRECIO: $${precio}`;
+            if (desc) msg += `\n\n📝 DESCRIPCIÓN:\n${desc}`;
+            if (archivosMap['inm'].length > 0) {
+                msg += `\n\n📎 ARCHIVOS: ${archivosMap['inm'].length}`;
+                archivosMap['inm'].forEach((a, i) => msg += `\n   ${i+1}. ${a.nombre} (${formatearTamaño(a.tamaño)})`);
+            }
+            msg += `\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📱 ENVIADO DESDE PINGINTLAB`;
+            enviarWhatsApp(msg);
+            cerrarModal();
+            mostrarToast('✅ SOLICITUD INMOBILIARIA ENVIADA', 'success');
+            agregarMensajeBot('🏘️ ¡SOLICITUD INMOBILIARIA RECIBIDA! EN BREVE TE CONTACTAMOS.');
+            setTimeout(() => {
+                mostrarTicket(nombre, 'INMOBILIARIO - ' + tipo, '$' + precio, ubicacion + ' · ' + superficie + 'M²');
+            }, 1000);
+        }
+
+        function enviarRecarga() {
+            const compania = document.getElementById('rCompania').value;
+            const numero = document.getElementById('rNumero').value.trim();
+            const nombre = document.getElementById('rNombre').value.trim();
+            const contacto = document.getElementById('rContacto').value.trim();
+            const tipo = document.getElementById('rTipoRecarga').value;
+            const monto = document.getElementById('rMonto').value.trim();
+            const paquete = document.getElementById('rPaquete').value;
+            if (!numero || !nombre || !contacto) { mostrarToast('COMPLETA CAMPOS OBLIGATORIOS.', 'error'); return; }
+            if ((tipo === 'NORMAL' || tipo === 'DATOS') && (!monto || monto < 10)) { mostrarToast('MONTO MÍNIMO $10.', 'error'); return; }
+            const { fecha, hora } = obtenerFechaHora();
+            let detalle = '';
+            if (tipo === 'NORMAL') detalle = `📱 RECARGA NORMAL - MONTO: $${monto}`;
+            else if (tipo === 'PAQUETE') detalle = `📦 PAQUETE: ${paquete}`;
+            else detalle = `🌐 RECARGA DE DATOS - MONTO: $${monto}`;
+            let msg = `🏢 PINGINTLAB - SOLICITUD DE RECARGA\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📅 FECHA: ${fecha}\n⏰ HORA: ${hora}\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n👤 CLIENTE: ${nombre}\n📞 CONTACTO: ${contacto}\n📞 NÚMERO: ${numero}\n📌 COMPAÑÍA: ${compania}\n${detalle}\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📱 ENVIADO DESDE PINGINTLAB`;
+            enviarWhatsApp(msg);
+            cerrarModal();
+            mostrarToast('✅ RECARGA ENVIADA', 'success');
+            agregarMensajeBot('📱 ¡RECARGA PROCESADA! EN BREVE RECIBIRÁS CONFIRMACIÓN.');
+            setTimeout(() => {
+                mostrarTicket(nombre, 'RECARGA ' + compania, tipo === 'PAQUETE' ? '$' + paquete.split('-')[1].trim() : '$' + monto, numero + ' · ' + detalle);
+            }, 1000);
+        }
+
+        function enviarPago() {
+            const servicio = document.getElementById('pServicio').value;
+            const cuenta = document.getElementById('pCuenta').value.trim();
+            const monto = document.getElementById('pMonto').value.trim();
+            const nombre = document.getElementById('pNombre').value.trim();
+            const telefono = document.getElementById('pTelefono').value.trim();
+            const email = document.getElementById('pEmail').value.trim();
+            if (!cuenta || !monto || !nombre || !telefono) { mostrarToast('COMPLETA CAMPOS OBLIGATORIOS.', 'error'); return; }
+            const { fecha, hora } = obtenerFechaHora();
+            let msg = `🏢 PINGINTLAB - SOLICITUD DE PAGO\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📅 FECHA: ${fecha}\n⏰ HORA: ${hora}\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n👤 CLIENTE: ${nombre}\n📞 CONTACTO: ${telefono}`;
+            if (email) msg += `\n📧 EMAIL: ${email}`;
+            msg += `\n📋 SERVICIO: ${servicio}\n📋 CUENTA: ${cuenta}\n💰 MONTO: $${monto}\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📱 ENVIADO DESDE PINGINTLAB`;
+            enviarWhatsApp(msg);
+            cerrarModal();
+            mostrarToast('✅ PAGO ENVIADO', 'success');
+            agregarMensajeBot('💳 ¡PAGO PROCESADO! EN BREVE RECIBIRÁS CONFIRMACIÓN.');
+            setTimeout(() => {
+                mostrarTicket(nombre, 'PAGO ' + servicio, '$' + monto, 'CUENTA: ' + cuenta);
+            }, 1000);
+        }
+
+        function enviarImpresion() {
+            const nombre = document.getElementById('iNombre').value.trim();
+            const telefono = document.getElementById('iTelefono').value.trim();
+            const email = document.getElementById('iEmail').value.trim();
+            const tipo = document.getElementById('iTipo').value;
+            const copias = document.getElementById('iCopias').value || 1;
+            const presupuesto = document.getElementById('iPresupuesto').value.trim();
+            if (!nombre || !telefono || !tipo) { mostrarToast('COMPLETA CAMPOS OBLIGATORIOS.', 'error'); return; }
+            if (!archivoImpresion && tipo !== 'escanear') { mostrarToast('ADJUNTA UN ARCHIVO.', 'error'); return; }
+            const { fecha, hora } = obtenerFechaHora();
+            const tipos = { 'blanco_negro': '⚫ B/N', 'color': '🎨 COLOR', 'ticket': '🧾 TICKET', 'escanear': '📠 ESCANEAR' };
+            let msg = `🏢 PINGINTLAB - SOLICITUD DE IMPRESIÓN\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📅 FECHA: ${fecha}\n⏰ HORA: ${hora}\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n👤 CLIENTE: ${nombre}\n📞 TELÉFONO: ${telefono}`;
+            if (email) msg += `\n📧 EMAIL: ${email}`;
+            msg += `\n🖨️ TIPO: ${tipos[tipo] || tipo}\n📄 COPIAS: ${copias}`;
+            if (presupuesto) msg += `\n💰 ANTEPRESUPUESTO: $${presupuesto}`;
+            if (archivoImpresion) msg += `\n📎 ARCHIVO: ${archivoImpresion.nombre} (${formatearTamaño(archivoImpresion.tamaño)})`;
+            msg += `\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📱 ENVIADO DESDE PINGINTLAB`;
+            enviarWhatsApp(msg);
+            cerrarModal();
+            mostrarToast('✅ IMPRESIÓN ENVIADA', 'success');
+            agregarMensajeBot('🖨️ ¡SOLICITUD DE IMPRESIÓN RECIBIDA!');
+            setTimeout(() => {
+                mostrarTicket(nombre, 'IMPRESIÓN ' + (tipos[tipo] || tipo), presupuesto ? '$' + presupuesto : '$0.00', copias + ' COPIA(S)');
+            }, 1000);
+        }
+
+        function enviarPublico() {
+            const tipo = document.getElementById('pubTipo').value;
+            const nombre = document.getElementById('pubNombre').value.trim();
+            const telefono = document.getElementById('pubTelefono').value.trim();
+            const curp = document.getElementById('pubCurp').value.trim().toUpperCase();
+            const email = document.getElementById('pubEmail').value.trim();
+            const obs = document.getElementById('pubObs').value.trim();
+            if (!nombre || !telefono || !curp) { mostrarToast('COMPLETA CAMPOS OBLIGATORIOS.', 'error'); return; }
+            const { fecha, hora } = obtenerFechaHora();
+            let msg = `🏢 PINGINTLAB - SERVICIO PÚBLICO\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📅 FECHA: ${fecha}\n⏰ HORA: ${hora}\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n👤 CLIENTE: ${nombre}\n📞 TELÉFONO: ${telefono}\n🆔 CURP: ${curp}`;
+            if (email) msg += `\n📧 EMAIL: ${email}`;
+            msg += `\n📋 TIPO: ${tipo}`;
+            if (obs) msg += `\n\n📝 OBSERVACIONES:\n${obs}`;
+            msg += `\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📱 ENVIADO DESDE PINGINTLAB`;
+            enviarWhatsApp(msg);
+            cerrarModal();
+            mostrarToast('✅ SOLICITUD ENVIADA', 'success');
+            agregarMensajeBot('📄 ¡SOLICITUD DE SERVICIO PÚBLICO RECIBIDA!');
+            setTimeout(() => {
+                mostrarTicket(nombre, 'SERVICIO PÚBLICO - ' + tipo, '$0.00', 'CURP: ' + curp);
+            }, 1000);
+        }
+
+        function enviarMtto() {
+            const tipo = document.getElementById('mTipo').value;
+            const nombre = document.getElementById('mNombre').value.trim();
+            const telefono = document.getElementById('mTelefono').value.trim();
+            const email = document.getElementById('mEmail').value.trim();
+            const desc = document.getElementById('mDescripcion').value.trim();
+            if (!nombre || !telefono || !desc) { mostrarToast('COMPLETA CAMPOS OBLIGATORIOS.', 'error'); return; }
+            const { fecha, hora } = obtenerFechaHora();
+            const tipos = { 'PREVENTIVO': '🛠️ PREVENTIVO', 'CORRECTIVO': '🔧 CORRECTIVO', 'COTIZACION': '📊 COTIZACIÓN' };
+            let msg = `🏢 PINGINTLAB - MANTENIMIENTO\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📅 FECHA: ${fecha}\n⏰ HORA: ${hora}\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n👤 CLIENTE: ${nombre}\n📞 TELÉFONO: ${telefono}`;
+            if (email) msg += `\n📧 EMAIL: ${email}`;
+            msg += `\n📋 TIPO: ${tipos[tipo] || tipo}\n\n📝 DESCRIPCIÓN:\n${desc}`;
+            if (archivosMap['m'].length > 0) {
+                msg += `\n\n📎 ARCHIVOS: ${archivosMap['m'].length}`;
+                archivosMap['m'].forEach((a, i) => msg += `\n   ${i+1}. ${a.nombre} (${formatearTamaño(a.tamaño)})`);
+            }
+            msg += `\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📱 ENVIADO DESDE PINGINTLAB`;
+            enviarWhatsApp(msg);
+            cerrarModal();
+            mostrarToast('✅ MANTENIMIENTO ENVIADO', 'success');
+            agregarMensajeBot('🔧 ¡SOLICITUD DE MANTENIMIENTO RECIBIDA!');
+            setTimeout(() => {
+                mostrarTicket(nombre, 'MANTENIMIENTO ' + (tipos[tipo] || tipo), '$0.00', desc.substring(0, 50) + '...');
+            }, 1000);
+        }
+
+        // ============================================================
+        // MÓDULO PRIVADO
+        // ============================================================
+        function verificarAcceso() {
+            const clave = document.getElementById('claveAcceso').value.trim();
+            const usuarios = {
+                'AKHL@PINGINT': 'ING. ANA KAREN HERNANDEZ LORENZO',
+                'DLP@PINGINT': 'ING. DIANA LUNA PATRICIO',
+                'RPP@PINGINT': 'ING. ROBERTO POPOCA PORTILLO'
+            };
+            if (usuarios[clave]) {
+                usuarioAcceso = usuarios[clave];
+                document.getElementById('panelPrivado').style.display = 'block';
+                document.getElementById('usuarioBadge').textContent = '👤 USUARIO: ' + usuarioAcceso;
+                document.getElementById('claveAcceso').style.display = 'none';
+                document.querySelector('.acceso-container .btn-submit').style.display = 'none';
+                mostrarToast(`✅ BIENVENID@ ${usuarioAcceso}`, 'success');
+                agregarMensajeBot(`🔒 BIENVENIDO ${usuarioAcceso}. REGISTRA TU JORNADA LABORAL.`);
+            } else {
+                mostrarToast('❌ CLAVE INCORRECTA.', 'error');
+                agregarMensajeBot('❌ CLAVE INCORRECTA. INTENTA NUEVAMENTE.');
+            }
+        }
+
+        function enviarPrivado() {
+            const ingeniero = document.getElementById('privIngeniero').value;
+            const entrada = document.getElementById('privEntrada').value;
+            const salida = document.getElementById('privSalida').value;
+            const actividades = document.getElementById('privActividades').value.trim();
+            if (!ingeniero || !entrada || !actividades) { mostrarToast('COMPLETA CAMPOS OBLIGATORIOS.', 'error'); return; }
+            const { fecha, hora } = obtenerFechaHora();
+            let msg = `🔒 REPORTE PRIVADO - PINGINTLAB\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📅 FECHA: ${fecha}\n⏰ HORA REPORTE: ${hora}\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n👤 INGENIER@: ${ingeniero}\n🟢 ENTRADA: ${entrada}`;
+            if (salida) msg += `\n🔴 SALIDA: ${salida}`;
+            msg += `\n\n📝 ACTIVIDADES:\n${actividades}\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📱 ENVIADO DESDE PINGINTLAB`;
+            enviarWhatsApp(msg);
+            mostrarToast('✅ REPORTE ENVIADO', 'success');
+            agregarMensajeBot(`🔒 ¡REPORTE ENVIADO! GRACIAS ${ingeniero}.`);
+            document.getElementById('privIngeniero').value = '';
+            document.getElementById('privEntrada').value = '';
+            document.getElementById('privSalida').value = '';
+            document.getElementById('privActividades').value = '';
+            document.getElementById('horaEntradaDisplay').textContent = '--:--:--';
+            document.getElementById('horaSalidaDisplay').textContent = '--:--:--';
+            cerrarModal();
+        }
+
+        // ============================================================
+        // FECHA ACTUAL
+        // ============================================================
+        function actualizarFecha() {
+            const { fecha } = obtenerFechaHora();
+            document.getElementById('fechaActual').textContent = '📅 ' + fecha;
+        }
+        actualizarFecha();
+
+        // ============================================================
+        // CIERRE CON ESC Y CLICK FUERA
+        // ============================================================
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarModal(); });
+        document.querySelectorAll('.modal-overlay').forEach(o => {
+            o.addEventListener('click', function(e) { if (e.target === this) cerrarModal(); });
+        });
+
+        // INICIALIZAR CHAT CON MENSAJE DE BIENVENIDA
+        setTimeout(() => {
+            agregarMensajeBot('👋 ¡BIENVENIDO A PINGINTLAB! SOY TU ASISTENTE VIRTUAL. ¿QUÉ SERVICIO TE INTERESA HOY?');
+        }, 1000);
+    </script>
+
+</body>
+</html>
